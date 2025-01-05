@@ -1,15 +1,17 @@
-version: '2'
 services:
   photon:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: tonsnoei/photon-geocoder:latest
+    image: ghcr.io/tomudding/photon-docker:0.6.1-graalvm23.0.1-ol9
     volumes:
-      - ./data:/photon/photon_data
+      - photon_data:/photon/photon_data
     ports:
-      - 2322:2322
+      - "2322:2322"
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        parallelism: 1
+        delay: 10s
 
 volumes:
-  data:
-    driver: local
+  photon_data:
